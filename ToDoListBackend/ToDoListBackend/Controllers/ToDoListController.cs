@@ -54,9 +54,9 @@ namespace ToDoListBackend.Controllers
         {
             try
             {
-                string query = @"insert into Tavisca.ToDoList values('" + toDoList.title + @"' ,'" + toDoList.description + @"'
-                ,'" + toDoList.status + @"'
-                )
+                string query = @"insert into Tavisca.ToDoList values('" + toDoList.title + @"' ,'" +
+                    toDoList.description + @"','" + toDoList.status + @"' ,'" + toDoList.category + @"' ,'" +
+                    toDoList.priority + @"','" + toDoList.due_dates + @"')
                 ";
 
                 DataTable table = new DataTable();
@@ -78,14 +78,17 @@ namespace ToDoListBackend.Controllers
         }
 
         // PUT api/<controller>/5
-        public string Put(Models.ToDoItem toDoList, int id)
+        public HttpResponseMessage Put(Models.ToDoItem toDoList, int id)
         {
             try
             {
                 string query = @"update Tavisca.ToDoList set 
-                Title='" + toDoList.title + @"',
-                Description='" + toDoList.description + @"',
-                Status='" + toDoList.status + @"'
+                title='" + toDoList.title + @"',
+                description='" + toDoList.description + @"',
+                status='" + toDoList.status + @"',
+                category='" + toDoList.category + @"',
+                priority='" + toDoList.priority + @"',
+                due_dates='" + toDoList.due_dates + @"'
                 where id=" + id + @"";
                 DataTable table = new DataTable();
                 using (var con = new SqlConnection(ConfigurationManager.
@@ -96,11 +99,11 @@ namespace ToDoListBackend.Controllers
                     cmd.CommandType = CommandType.Text;
                     da.Fill(table);
                 }
-                return "Successfully Updated";
+                return Get(id);
             }
             catch (Exception)
             {
-                return "Put Failed";
+                return Get(id);
             }
 
         }
